@@ -1,0 +1,88 @@
+
+<div class="curtain" aria-hidden="true"><i></i><i></i><i></i></div>
+<nav [class.s]="scrolled()"><div class="wrap">
+  <a class="logo" href="#top">Gérard<b>.</b></a>
+  @for (l of links; track l[0]) { <a class="l" [href]="'#' + l[0]">{{ u(l[1]) }}</a> }
+  <button class="lang" (click)="pdf()" [title]="u('pdf')" [attr.aria-label]="u('pdf')">PDF</button>
+  <button class="lang" (click)="toggle()" aria-label="Changer de langue / Switch language">{{ L() === 'fr' ? 'EN' : 'FR' }}</button>
+</div></nav>
+
+<header class="hero" id="top" (pointermove)="spot($event)" [style.--mx]="mx()" [style.--my]="my()"><div class="wrap">
+  <div>
+    <p class="hello">{{ u('hello') }}</p>
+    <h1 aria-label="Gérard Roussel Meli Ngandjou">
+      <span class="w">@for (c of n1; track $index) {<span class="c" [style.animation-delay]="(1 + $index * .045) + 's'">{{ c }}</span>}</span>
+      <span class="w">@for (c of n2; track $index) {<span class="c" [style.animation-delay]="(1.6 + $index * .045) + 's'">{{ c }}</span>}</span>
+    </h1>
+    <p class="role">{{ tx(d.head) }}</p>
+    <p class="lead">{{ tx(d.sum) }}</p>
+    <div class="cta"><a class="btn p" href="#pj">{{ u('c1') }}</a><a class="btn o" href="#ct">{{ u('c2') }}</a></div>
+  </div>
+  <div class="term" aria-hidden="true"><div class="bar"><i></i><i></i><i></i></div><pre [innerHTML]="term()"></pre></div>
+</div></header>
+
+<div class="mq" aria-hidden="true"><div>@for (w of words; track $index) {<span>{{ w }}</span>}</div></div>
+
+<section id="xp"><div class="wrap"><h2>{{ u('n_xp') }}</h2>
+  <div class="tl" #tl [style.--p]="prog()">
+    @for (x of d.xp; track x.co; let i = $index) {
+      <article class="job" rv [class.now]="i === 0">
+        <p class="when">{{ rng(x.s, x.e) }}</p><h3>{{ tx(x.t) }}</h3><p class="co">{{ x.co }} · {{ x.loc }}</p>
+        <ul>@for (k of x.k[L()]; track $index) {<li>{{ k }}</li>}</ul>
+        @if (x.d) { <details><summary>{{ u('tasks') }}</summary><p>{{ tx(x.d) }}</p></details> }
+      </article>
+    }
+  </div>
+</div></section>
+
+<section id="pj"><div class="wrap"><h2>{{ u('n_pj') }}</h2>
+  <div class="flt">@for (f of filters; track f[0]) {<button [attr.aria-pressed]="filter() === f[0]" (click)="filter.set(f[0])">{{ u(f[1]) }}</button>}</div>
+  <div class="grid">
+    @for (p of d.pj; track p.n) {
+      <article class="card" rv [class.hide]="!show(p)" (pointermove)="tilt($event)" (pointerleave)="untilt($event)">
+        <div class="t"><h3>{{ p.n }}</h3><span class="tag" [class.pe]="p.p">{{ p.p ? u('tper') : u('tpro') }}</span></div>
+        <p>{{ tx(p.d) }}</p>
+        @if (p.h[L()].length) { <ul>@for (h of p.h[L()]; track $index) {<li>{{ h }}</li>}</ul> }
+        @if (p.r) { <a class="rp" [href]="p.r" target="_blank" rel="noopener">{{ u('code') }}</a> }
+        <div class="chips">@for (s of p.st; track s) {<span>{{ s }}</span>}</div>
+      </article>
+    }
+  </div>
+</div></section>
+
+<section id="sk"><div class="wrap"><h2>{{ u('n_sk') }}</h2>
+  <div class="sk">
+    @for (c of d.sk; track c.n.en) {
+      <div rv><h3>{{ tx(c.n) }}</h3>
+        @for (s of c.i; track $index) {
+          <div class="sr"><span>{{ tx(s[0]) }}</span>
+            <span class="pips" role="img" [attr.aria-label]="s[1] + '/5'">@for (k of five; track k) {<i [class.on]="k <= s[1]" [style.--n]="k"></i>}</span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div></section>
+
+<section id="ed"><div class="wrap two">
+  <div rv><h2>{{ u('n_ed') }}</h2>
+    @for (e of d.ed; track e.t.en) {
+      <div class="edu"><h3>{{ tx(e.t) }}</h3><p class="when">{{ rng(e.s, e.e) }}</p><p>{{ tx(e.f) }}</p><p class="co">{{ e.n }} · {{ e.loc }}</p></div>
+    }
+  </div>
+  <div rv><h2>{{ u('n_lg') }}</h2>
+    @for (g of d.lg; track $index) { <div class="sr"><span>{{ tx(g[0]) }}</span><span>{{ tx(g[1]) }}</span></div> }
+  </div>
+</div></section>
+
+<section id="ct" class="contact"><div class="wrap">
+  <h2>{{ u('ct_h') }}</h2><p class="lead" rv style="margin:0 auto 2rem">{{ u('ct_p') }}</p>
+  <a class="big" href="mailto:melingandjoug@gmail.com" (pointermove)="mag($event)" (pointerleave)="unmag($event)">melingandjoug&#64;gmail.com</a>
+  <div class="links">
+    <button class="btn p pdfbtn" (click)="pdf()">{{ u('pdf') }}</button>
+    <a class="btn o" href="tel:+237681510228">+237 681 51 02 28</a>
+    <a class="btn o" href="https://www.linkedin.com/in/gerard-meli-ngandjou-52a2a2357/" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="btn o" href="https://github.com/GerardMeli" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</div></section>
+<footer>© {{ year }} Gérard Roussel Meli Ngandjou · Yaoundé, Cameroun</footer>
