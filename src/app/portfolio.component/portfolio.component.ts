@@ -1,22 +1,21 @@
-import {Component, Directive, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation, effect, signal, untracked} from '@angular/core';
+import {Component, Directive, ElementRef, HostListener, OnDestroy, OnInit, ViewEncapsulation, effect, signal, untracked} from '@angular/core';
 
-/* ---------- Données (issues de portfolio-data.sql) ---------- */
 const UI:any={
- fr:{n_xp:"Expérience",n_pj:"Projets",n_sk:"Compétences",n_ed:"Formation",n_lg:"Langues",n_ct:"Contact",pdf:"Télécharger le CV (PDF)",hello:"Bonjour, je suis",c1:"Voir mes projets",c2:"Me contacter",now:"Aujourd'hui",tasks:"Missions détaillées",all:"Tous",pro:"Professionnels",per:"Personnels",tpro:"Pro",tper:"Perso",code:"Voir le code",ct_h:"Travaillons ensemble.",ct_p:"Ouvert à un poste en CDI ou CDD, et à la mobilité. Écrivez-moi, je réponds vite.",nat:"Natif",ro:"développeur backend",ci:"Yaoundé, Cameroun",mob:"ouvert à la mobilité"},
- en:{n_xp:"Experience",n_pj:"Projects",n_sk:"Skills",n_ed:"Education",n_lg:"Languages",n_ct:"Contact",pdf:"Download CV (PDF)",hello:"Hi, I'm",c1:"See my projects",c2:"Get in touch",now:"Present",tasks:"Detailed duties",all:"All",pro:"Professional",per:"Personal",tpro:"Work",tper:"Personal",code:"View code",ct_h:"Let's work together.",ct_p:"Open to permanent or fixed-term roles, and to relocation. Write to me, I reply fast.",nat:"Native",ro:"backend developer",ci:"Yaoundé, Cameroon",mob:"open to relocation"}
+ fr:{n_xp:"Expérience",n_pj:"Projets",n_sk:"Compétences",n_ed:"Formation",n_lg:"Langues",n_ct:"Contact",pdf:"Télécharger le CV (PDF)",cv:"Télécharger mon CV",hi:"Bonjour,",iam:"Je suis",pre:"",who:"Qui suis-je ?",n_ab:"À propos",tm:"Changer de thème",cvp:"Profil",cvs:"Compétences techniques",cvx:"Expérience professionnelle",cvj:"Projets",cve:"Formation",cvl:"Langues",mob2:"Ouvert à la mobilité.",hello:"Bonjour, je suis",c1:"Voir mes projets",c2:"Me contacter",now:"Aujourd'hui",tasks:"Missions détaillées",all:"Tous",pro:"Professionnels",per:"Personnels",tpro:"Pro",tper:"Perso",code:"Voir le code",ct_h:"Travaillons ensemble.",ct_p:"Ouvert à un poste en CDI ou CDD, et à la mobilité. Écrivez-moi, je réponds vite.",nat:"Natif",ro:"développeur backend",ci:"Yaoundé, Cameroun",mob:"ouvert à la mobilité"},
+ en:{n_xp:"Experience",n_pj:"Projects",n_sk:"Skills",n_ed:"Education",n_lg:"Languages",n_ct:"Contact",pdf:"Download CV (PDF)",cv:"Download my CV",hi:"Hello,",iam:"I'm",pre:"a ",who:"Who am I?",n_ab:"About",tm:"Toggle theme",cvp:"Profile",cvs:"Technical skills",cvx:"Professional experience",cvj:"Projects",cve:"Education",cvl:"Languages",mob2:"Open to relocation.",hello:"Hi, I'm",c1:"See my projects",c2:"Get in touch",now:"Present",tasks:"Detailed duties",all:"All",pro:"Professional",per:"Personal",tpro:"Work",tper:"Personal",code:"View code",ct_h:"Let's work together.",ct_p:"Open to permanent or fixed-term roles, and to relocation. Write to me, I reply fast.",nat:"Native",ro:"backend developer",ci:"Yaoundé, Cameroon",mob:"open to relocation"}
 };
 const D:any={
  head:{fr:"Développeur backend – Java / Spring Boot / Kotlin",en:"Backend Developer – Java / Spring Boot / Kotlin"},
  sum:{fr:"Développeur backend junior et diplômé en informatique de l'Institut universitaire de haute technologie Jacky Felly Nafack (JFN HUI). Expérience dans le développement d'API RESTful et de micro-services backend avec Java, Kotlin, Spring Boot et Spring Security. Solide maîtrise de la POO, de l'intégration de bases de données MySQL et PostgreSQL, et de JPA/Hibernate. À l'aise sous Linux (Ubuntu) et en équipe.",
       en:"Junior backend developer and Computer Engineering graduate of the Jacky Felly Nafack University Institute of Advanced Technology (JFN HUI). Experience building RESTful APIs and backend microservices with Java, Kotlin, Spring Boot and Spring Security. Strong command of OOP, MySQL and PostgreSQL integration, and JPA/Hibernate. Comfortable on Linux (Ubuntu) and in collaborative teams."},
  xp:[
-  {co:"Connect Technology",loc:"Melen, Yaoundé",s:"2025-12",e:null,
+  {co:"Connect Technology",b:{fr:"Actuel",en:"Current"},loc:"Melen, Yaoundé",s:"2025-12",e:null,
    t:{fr:"Développeur Backend",en:"Backend Developer"},
    k:{fr:["Maintenance et optimisation du code avec Sonarqube et Jenkins, et nouvelles fonctionnalités du Game Management Studio (GMS), un module qui centralise les jeux.","Développement fullstack de FlowChat, une messagerie en ligne intégrable à d'autres applications web pour recueillir les réclamations des clients.","Développement du module de jeu de machine à sous « CoinSlot » sous forme de microservice."],
       en:["Code maintenance and optimisation with Sonarqube and Jenkins, plus new features for the Game Management Studio (GMS), a module that centralises games.","Full-stack development of FlowChat, a web messaging app that plugs into other web applications to collect customer complaints.","Development of the CoinSlot slot machine game module as a microservice."]},
    d:{fr:"Spécifications générales et détaillées (UML, design patterns) · développements et composants logiciels · tests unitaires et d'intégration · phases build et run (tierce maintenance types 1 et 2) · évolutions d'applications existantes · usine logicielle Ixi (intégration continue, SVN, Sonarqube, Jenkins, TestRails, Redmine, Nexus) · estimation des charges.",
       en:"General and detailed specifications (UML, design patterns) · software and component development · unit and integration tests · build and run phases (third-party maintenance types 1 and 2) · enhancements to existing applications · Ixi software factory (CI, SVN, Sonarqube, Jenkins, TestRails, Redmine, Nexus) · workload estimates."}},
-  {co:"Sklf-Group",loc:"Mendong, Yaoundé",s:"2023-06",e:"2023-08",
+  {co:"Sklf-Group",b:{fr:"Stage",en:"Internship"},loc:"Mendong, Yaoundé",s:"2023-06",e:"2023-08",
    t:{fr:"Stage en développement d'applications",en:"Internship in application development"},
    k:{fr:["Jeu éducatif sous Scratch pour faire découvrir la culture camerounaise.","Révision de la POO, de l'algorithmique et des API.","Notions de base sur les réseaux."],
       en:["Educational game built in Scratch to teach Cameroonian culture.","Review of OOP, algorithmics and APIs.","Networking basics."]}}
@@ -65,29 +64,26 @@ export class Reveal implements OnInit, OnDestroy {
   imports: [Reveal],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './portfolio.component.html',
-  styleUrl: './portfolio.component.scss',
+  styleUrl: './portfolio.component.scss'
 })
 export class PortfolioComponent implements OnDestroy {
   d = D;
   year = new Date().getFullYear();
   five = [1, 2, 3, 4, 5];
-  n1 = [...'Gérard Roussel'].map(c => c === ' ' ? '\u00a0' : c);
-  n2 = [...'Meli Ngandjou'].map(c => c === ' ' ? '\u00a0' : c);
-  links = [['xp', 'n_xp'], ['pj', 'n_pj'], ['sk', 'n_sk'], ['ed', 'n_ed'], ['ct', 'n_ct']];
+  links = [['ab', 'n_ab'], ['xp', 'n_xp'], ['pj', 'n_pj'], ['sk', 'n_sk'], ['ed', 'n_ed'], ['ct', 'n_ct']];
   filters = [['all', 'all'], ['pro', 'pro'], ['per', 'per']];
-  words = [...['Java', 'Kotlin', 'Spring Boot', 'PostgreSQL', 'Angular', 'Microservices', 'Spring Security', 'REST API', 'Jetpack Compose', 'Linux'], ...['Java', 'Kotlin', 'Spring Boot', 'PostgreSQL', 'Angular', 'Microservices', 'Spring Security', 'REST API', 'Jetpack Compose', 'Linux']];
   L = signal<'fr' | 'en'>((navigator.language || 'fr').startsWith('en') ? 'en' : 'fr');
+  theme = signal<'dark' | 'light'>(matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
   filter = signal('all');
   scrolled = signal(false);
-  prog = signal('0%');
-  mx = signal('70%');
-  my = signal('30%');
+  mx = signal('72%');
+  my = signal('25%');
   term = signal('');
   private tm: any;
-  @ViewChild('tl') tl?: ElementRef<HTMLElement>;
 
   constructor() {
     effect(() => { const l = this.L(); document.documentElement.lang = l; untracked(() => this.type(l)); });
+    effect(() => { document.documentElement.dataset['theme'] = this.theme(); });
   }
   ngOnDestroy() { clearTimeout(this.tm); }
 
@@ -98,15 +94,20 @@ export class PortfolioComponent implements OnDestroy {
     return f(s) + ' – ' + (e ? f(e) : this.u('now'));
   }
   show(p: any): boolean { const f = this.filter(); return f === 'all' || (f === 'pro' && !p.p) || (f === 'per' && p.p); }
-  toggle() { this.L.set(this.L() === 'fr' ? 'en' : 'fr'); }
-  pdf() { window.print(); }
-
-  @HostListener('window:beforeprint') openAll() { document.querySelectorAll('details').forEach(x => x.setAttribute('open', '')); }
-  @HostListener('window:scroll') onScroll() {
-    this.scrolled.set(scrollY > 40);
-    const r = this.tl?.nativeElement.getBoundingClientRect();
-    if (r) this.prog.set(Math.max(0, Math.min(100, (innerHeight * .6 - r.top) / r.height * 100)) + '%');
+  skl(c: any): string { return c.i.map((s: any) => this.tx(s[0])).join(', '); }
+  bul(s: string): string[] { return s.split(' · '); }
+  toggleLang() { this.L.set(this.L() === 'fr' ? 'en' : 'fr'); }
+  toggleTheme() { this.theme.set(this.theme() === 'dark' ? 'light' : 'dark'); }
+  toTop() { scrollTo({top: 0, behavior: 'smooth'}); }
+  /** Imprime uniquement le CV canadien (Letter, 2 pages) ; le nom du fichier PDF vient du titre de la page. */
+  printCv() {
+    const t = document.title;
+    document.title = 'Gerard Roussel Meli Ngandjou';
+    window.print();
+    document.title = t;
   }
+
+  @HostListener('window:scroll') onScroll() { this.scrolled.set(scrollY > 40); }
   spot(e: PointerEvent) { this.mx.set(e.clientX + 'px'); this.my.set(e.clientY + 'px'); }
   tilt(e: PointerEvent) {
     const c = e.currentTarget as HTMLElement, r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
@@ -124,19 +125,22 @@ export class PortfolioComponent implements OnDestroy {
     clearTimeout(this.tm);
     const u = UI[l], cur = '<span class="caret"></span>';
     const lines = [
-      '<span class="k">GET</span> /gerard <span class="m">HTTP/1.1</span>', '<span class="ok">200 OK</span>', '{',
-      `  <span class="k">"role"</span>: <span class="s">"${u.ro}"</span>,`,
-      '  <span class="k">"stack"</span>: [<span class="s">"Java"</span>, <span class="s">"Kotlin"</span>,',
-      '            <span class="s">"Spring Boot"</span>, <span class="s">"PostgreSQL"</span>],',
-      '  <span class="k">"front"</span>: <span class="s">"Angular"</span>,',
-      `  <span class="k">"city"</span>: <span class="s">"${u.ci}"</span>,`,
-      `  <span class="k">"mobility"</span>: <span class="s">"${u.mob}"</span>`, '}'
+      '<span class="kw">const</span> <span class="fn">developer</span> = {',
+      '  name: <span class="st">\'Gerard Roussel Meli Ngandjou\'</span>,',
+      `  role: <span class="st">'${u.ro}'</span>,`,
+      '  stack: [<span class="st">\'Java\'</span>, <span class="st">\'Kotlin\'</span>, <span class="st">\'Spring Boot\'</span>,',
+      '    <span class="st">\'PostgreSQL\'</span>, <span class="st">\'Angular\'</span>],',
+      `  city: <span class="st">'${u.ci}'</span>,`,
+      '  relocation: <span class="nu">true</span>,',
+      '  <span class="fn">hireable</span>() {',
+      '    <span class="kw">return</span> <span class="th">this</span>.stack.length >= <span class="nu">5</span>;',
+      '  }', '};'
     ];
     let i = 0;
     const step = () => {
       if (i >= lines.length) { this.term.set(lines.join('\n') + '\n' + cur); return; }
       this.term.set(lines.slice(0, i + 1).join('\n') + cur); i++;
-      this.tm = setTimeout(step, i === 1 ? 700 : i === 2 ? 500 : 260);
+      this.tm = setTimeout(step, i === 1 ? 900 : 240);
     };
     step();
   }
