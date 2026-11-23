@@ -160,6 +160,7 @@ nav a.l:hover { color: var(--a2); }
 @media (max-width: 900px) { .hero .wrap { grid-template-columns: 1fr; } }
 .ht { font-size: clamp(2.1rem, 4.8vw, 3.7rem); font-weight: 800; }
 .ln { display: block; opacity: 0; animation: rise .9s $ease forwards; animation-delay: calc(#{$t0} + var(--i) * .12s); }
+.rc { display: inline-block; width: .07em; height: .85em; margin-left: .05em; background: var(--a2); vertical-align: -.04em; animation: bl 1s steps(1) infinite; }
 .soc, .cta { opacity: 0; animation: rise .9s $ease forwards; }
 .soc { display: flex; gap: 1.1rem; margin: 2rem 0 1.6rem; animation-delay: calc(#{$t0} + .45s); }
 .cta { display: flex; gap: 1rem; flex-wrap: wrap; animation-delay: calc(#{$t0} + .6s); }
@@ -254,11 +255,14 @@ footer { text-align: center; color: var(--mute); font-size: .9rem; padding: 2rem
 .cv { display: none; }
 
 @media print {
-  @page { size: letter; margin: .55in .6in; }
+  @page { size: letter; margin: 0; } // marge 0 = le navigateur n'imprime ni date, ni titre, ni URL, ni n° de page
   html, body { background: #fff !important; color: #111 !important; }
   app-portfolio > *:not(.cv) { display: none !important; }
 
-  .cv { display: block; font: 400 10.4pt/1.45 'Poppins', Arial, Helvetica, sans-serif; color: #111; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cv { display: table; width: 100%; border-collapse: collapse; font: 400 10.4pt/1.45 'Poppins', Arial, Helvetica, sans-serif; color: #111; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cv td { padding: 0; }
+  .cv .pg { height: .55in; }          // marge haute/basse recréée sur CHAQUE page (thead/tfoot se répètent)
+  .cv .cvb { padding: 0 .6in; }       // marges gauche/droite
   .cv h1 { font-size: 23pt; line-height: 1.1; font-weight: 700; color: #14305f; }
   .cv .cvt { font-size: 12pt; font-weight: 600; color: #333; margin-top: 3pt; }
   .cv .cvc { font-size: 9pt; color: #333; margin-top: 4pt; }

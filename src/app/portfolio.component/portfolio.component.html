@@ -1,8 +1,11 @@
-<div class="curtain" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="intro" aria-hidden="true">
+  <i class="ihalf t"></i><i class="ihalf b"></i>
+  <div class="imark"><span class="igm">GM</span><span class="ibar"><b></b></span><span class="ipct"></span></div>
+</div>
 <nav [class.s]="scrolled()"><div class="wrap">
   <a class="logo" href="#top">Gerard Meli</a>
   @for (l of links; track l[0]) { <a class="l" [href]="'#' + l[0]">{{ u(l[1]) }}</a> }
-  <button class="ic" (click)="toggleTheme()" [attr.aria-label]="u('tm')" [title]="u('tm')">{{ theme() === 'dark' ? '☀' : '☾' }}</button>
+  <button class="ic" (click)="cycleTheme()" [attr.aria-label]="u('tm')" [title]="u('tm')">{{ themeLabel() }}</button>
   <button class="ic" (click)="toggleLang()" aria-label="Changer de langue / Switch language">{{ L() === 'fr' ? 'EN' : 'FR' }}</button>
   <button class="pill sm" (click)="printCv()">CV</button>
 </div></nav>
@@ -12,7 +15,7 @@
     <h1 class="ht">
       <span class="ln" style="--i:0">{{ u('hi') }}</span>
       <span class="ln" style="--i:1">{{ u('iam') }} <span class="a1">Gerard Roussel Meli Ngandjou</span>,</span>
-      <span class="ln" style="--i:2">{{ u('pre') }}<span class="a2">{{ u('ro') }}</span>.</span>
+      <span class="ln" style="--i:2">{{ u('pre') }}<span class="a2">{{ role() }}</span><span class="rc" aria-hidden="true"></span>.</span>
     </h1>
     <div class="soc">
       <a href="https://github.com/GerardMeli" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
@@ -94,8 +97,9 @@
 <footer>© {{ year }} Gerard Roussel Meli Ngandjou · Yaoundé, Cameroun</footer>
 <button class="top" [class.show]="scrolled()" (click)="toTop()" aria-label="Haut de page">↑</button>
 
-<!-- CV canadien : visible uniquement à l'impression (format Letter, 2 pages) -->
-<div class="cv">
+<table class="cv" role="presentation">
+<thead><tr><td><div class="pg"></div></td></tr></thead>
+<tbody><tr><td class="cvb">
   <header>
     <h1>Gerard Roussel Meli Ngandjou</h1>
     <p class="cvt">{{ tx(d.head) }}</p>
@@ -112,7 +116,7 @@
       <ul>@for (k of x.k[L()]; track $index) {<li>{{ k }}</li>}@if (x.d) { @for (b of bul(tx(x.d)); track $index) {<li>{{ b }}</li>} }</ul>
     </div>
   }
-  <div class="p2">
+  <div>
     <h2>{{ u('cvj') }}</h2>
     <ul>@for (p of d.pj; track p.n) { <li><b>{{ p.n }}</b> ({{ p.st.join(', ') }}) — {{ tx(p.d) }} {{ p.h[L()].join('. ') }}@if (p.r) { <i> {{ p.r }}</i> }</li> }</ul>
     <h2>{{ u('cve') }}</h2>
@@ -120,4 +124,6 @@
     <h2>{{ u('cvl') }}</h2>
     <p>@for (g of d.lg; track $index) { <span>{{ tx(g[0]) }} : {{ tx(g[1]) }}{{ $last ? '' : ' · ' }}</span> }</p>
   </div>
-</div>
+</td></tr></tbody>
+<tfoot><tr><td><div class="pg"></div></td></tr></tfoot>
+</table>

@@ -1,8 +1,9 @@
 import {Component, Directive, ElementRef, HostListener, OnDestroy, OnInit, ViewEncapsulation, effect, signal, untracked} from '@angular/core';
 
+/* ---------- Données (issues de portfolio-data.sql) ---------- */
 const UI:any={
- fr:{n_xp:"Expérience",n_pj:"Projets",n_sk:"Compétences",n_ed:"Formation",n_lg:"Langues",n_ct:"Contact",pdf:"Télécharger le CV (PDF)",cv:"Télécharger mon CV",hi:"Bonjour,",iam:"Je suis",pre:"",who:"Qui suis-je ?",n_ab:"À propos",tm:"Changer de thème",cvp:"Profil",cvs:"Compétences techniques",cvx:"Expérience professionnelle",cvj:"Projets",cve:"Formation",cvl:"Langues",mob2:"Ouvert à la mobilité.",hello:"Bonjour, je suis",c1:"Voir mes projets",c2:"Me contacter",now:"Aujourd'hui",tasks:"Missions détaillées",all:"Tous",pro:"Professionnels",per:"Personnels",tpro:"Pro",tper:"Perso",code:"Voir le code",ct_h:"Travaillons ensemble.",ct_p:"Ouvert à un poste en CDI ou CDD, et à la mobilité. Écrivez-moi, je réponds vite.",nat:"Natif",ro:"développeur backend",ci:"Yaoundé, Cameroun",mob:"ouvert à la mobilité"},
- en:{n_xp:"Experience",n_pj:"Projects",n_sk:"Skills",n_ed:"Education",n_lg:"Languages",n_ct:"Contact",pdf:"Download CV (PDF)",cv:"Download my CV",hi:"Hello,",iam:"I'm",pre:"a ",who:"Who am I?",n_ab:"About",tm:"Toggle theme",cvp:"Profile",cvs:"Technical skills",cvx:"Professional experience",cvj:"Projects",cve:"Education",cvl:"Languages",mob2:"Open to relocation.",hello:"Hi, I'm",c1:"See my projects",c2:"Get in touch",now:"Present",tasks:"Detailed duties",all:"All",pro:"Professional",per:"Personal",tpro:"Work",tper:"Personal",code:"View code",ct_h:"Let's work together.",ct_p:"Open to permanent or fixed-term roles, and to relocation. Write to me, I reply fast.",nat:"Native",ro:"backend developer",ci:"Yaoundé, Cameroon",mob:"open to relocation"}
+ fr:{n_xp:"Expérience",n_pj:"Projets",n_sk:"Compétences",n_ed:"Formation",n_lg:"Langues",n_ct:"Contact",pdf:"Télécharger le CV (PDF)",cv:"Télécharger mon CV",hi:"Bonjour,",iam:"Je suis",pre:"",who:"Qui suis-je ?",n_ab:"À propos",tm:"Changer de thème",th:{folio:"Folio",light:"Clair",dark:"Sombre"},cvp:"Profil",cvs:"Compétences techniques",cvx:"Expérience professionnelle",cvj:"Projets",cve:"Formation",cvl:"Langues",mob2:"Ouvert à la mobilité.",hello:"Bonjour, je suis",c1:"Voir mes projets",c2:"Me contacter",now:"Aujourd'hui",tasks:"Missions détaillées",all:"Tous",pro:"Professionnels",per:"Personnels",tpro:"Pro",tper:"Perso",code:"Voir le code",ct_h:"Travaillons ensemble.",ct_p:"Ouvert à un poste en CDI ou CDD, et à la mobilité. Écrivez-moi, je réponds vite.",nat:"Natif",ro:"développeur backend",ro2:"développeur fullstack",ci:"Yaoundé, Cameroun",mob:"ouvert à la mobilité"},
+ en:{n_xp:"Experience",n_pj:"Projects",n_sk:"Skills",n_ed:"Education",n_lg:"Languages",n_ct:"Contact",pdf:"Download CV (PDF)",cv:"Download my CV",hi:"Hello,",iam:"I'm",pre:"a ",who:"Who am I?",n_ab:"About",tm:"Change theme",th:{folio:"Folio",light:"Light",dark:"Dark"},cvp:"Profile",cvs:"Technical skills",cvx:"Professional experience",cvj:"Projects",cve:"Education",cvl:"Languages",mob2:"Open to relocation.",hello:"Hi, I'm",c1:"See my projects",c2:"Get in touch",now:"Present",tasks:"Detailed duties",all:"All",pro:"Professional",per:"Personal",tpro:"Work",tper:"Personal",code:"View code",ct_h:"Let's work together.",ct_p:"Open to permanent or fixed-term roles, and to relocation. Write to me, I reply fast.",nat:"Native",ro:"backend developer",ro2:"fullstack developer",ci:"Yaoundé, Cameroon",mob:"open to relocation"}
 };
 const D:any={
  head:{fr:"Développeur backend – Java / Spring Boot / Kotlin",en:"Backend Developer – Java / Spring Boot / Kotlin"},
@@ -21,7 +22,6 @@ const D:any={
       en:["Educational game built in Scratch to teach Cameroonian culture.","Review of OOP, algorithmics and APIs.","Networking basics."]}}
  ],
  pj:[
-  {n:"Portfolio multi-marchés",p:1,d:{fr:"CV adapté à chaque marché.",en:"CV adapted to each market."},h:{fr:["Un CV qui s'adapte au marché défini par l'utilisateur"],en:["A CV that adapts to the market the user defines"]},st:["Java","Spring Boot","PostgreSQL","Angular","Spring Security"],r:"https://github.com/GerardMeli/backend-portfolio"},
   {n:"KaizenApp",p:1,d:{fr:"Application mobile sécurisée pour suivre budget, dépenses et épargne.",en:"Secure mobile app to track budget, spending and savings."},h:{fr:["API de conversions multidevises, multilingues et multinationales","Google OAuth2 pour la sauvegarde cloud, les codes PIN et les empreintes digitales"],en:["API for multi-currency, multi-language and multi-country conversions","Google OAuth2 for cloud backup, PINs and fingerprints"]},st:["Jetpack Compose","Kotlin","OAuth 2 Google"],r:"https://gitlab.com/gerardmeli/android"},
   {n:"AnimeTracker",p:1,d:{fr:"Application mobile d'actualités en temps réel sur anime, mangas, films, séries et jeux vidéo.",en:"Mobile app with real-time news on anime, manga, films, series and games."},h:{fr:["Appels API : Anilist, Jikan, RAWG, TMDB"],en:["API calls: Anilist, Jikan, RAWG, TMDB"]},st:["Kotlin","Jetpack Compose"],r:"https://gitlab.com/gerardmeli/android"},
   {n:"GMS",p:0,d:{fr:"Module pour centraliser et gérer les jeux.",en:"A module for centralising and managing games."},h:{fr:[],en:[]},st:["Java","Spring Boot","PostgreSQL","Angular","Spring Security"]},
@@ -42,7 +42,6 @@ const D:any={
  ],
  lg:[[{fr:"Français",en:"French"},{fr:"Natif",en:"Native"}],[{fr:"Anglais",en:"English"},"B1"]]
 };
-
 
 /* ---------- Animation d'apparition au scroll ---------- */
 @Directive({selector: '[rv]', standalone: true, host: {class: 'rv'}})
@@ -73,19 +72,22 @@ export class PortfolioComponent implements OnDestroy {
   links = [['ab', 'n_ab'], ['xp', 'n_xp'], ['pj', 'n_pj'], ['sk', 'n_sk'], ['ed', 'n_ed'], ['ct', 'n_ct']];
   filters = [['all', 'all'], ['pro', 'pro'], ['per', 'per']];
   L = signal<'fr' | 'en'>((navigator.language || 'fr').startsWith('en') ? 'en' : 'fr');
-  theme = signal<'dark' | 'light'>(matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  theme = signal<'folio' | 'light' | 'dark'>('folio'); // folio = ng-dev-folio · light/dark = developer-portfolio
   filter = signal('all');
   scrolled = signal(false);
   mx = signal('72%');
   my = signal('25%');
   term = signal('');
+  role = signal('');
   private tm: any;
+  private rt: any;
+  private started = false;
 
   constructor() {
-    effect(() => { const l = this.L(); document.documentElement.lang = l; untracked(() => this.type(l)); });
+    effect(() => { const l = this.L(); document.documentElement.lang = l; untracked(() => { this.type(l); this.cycle(l, this.started ? 300 : 2900); this.started = true; }); });
     effect(() => { document.documentElement.dataset['theme'] = this.theme(); });
   }
-  ngOnDestroy() { clearTimeout(this.tm); }
+  ngOnDestroy() { clearTimeout(this.tm); clearTimeout(this.rt); }
 
   u(k: string): string { return UI[this.L()][k]; }
   tx(v: any): string { return typeof v === 'string' ? v : v[this.L()]; }
@@ -95,9 +97,10 @@ export class PortfolioComponent implements OnDestroy {
   }
   show(p: any): boolean { const f = this.filter(); return f === 'all' || (f === 'pro' && !p.p) || (f === 'per' && p.p); }
   skl(c: any): string { return c.i.map((s: any) => this.tx(s[0])).join(', '); }
-  bul(s: string): string[] { return s.split(' · '); }
+  bul(s: string): string[] { return s.split(' · ').map(b => b.charAt(0).toUpperCase() + b.slice(1)); }
   toggleLang() { this.L.set(this.L() === 'fr' ? 'en' : 'fr'); }
-  toggleTheme() { this.theme.set(this.theme() === 'dark' ? 'light' : 'dark'); }
+  cycleTheme() { const o = ['folio', 'light', 'dark'] as const; this.theme.set(o[(o.indexOf(this.theme()) + 1) % o.length]); }
+  themeLabel(): string { return UI[this.L()].th[this.theme()]; }
   toTop() { scrollTo({top: 0, behavior: 'smooth'}); }
   /** Imprime uniquement le CV canadien (Letter, 2 pages) ; le nom du fichier PDF vient du titre de la page. */
   printCv() {
@@ -120,6 +123,28 @@ export class PortfolioComponent implements OnDestroy {
     m.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .06}px,${(e.clientY - r.top - r.height / 2) * .2}px)`;
   }
   unmag(e: PointerEvent) { (e.currentTarget as HTMLElement).style.transform = ''; }
+
+  /** Titre qui alterne : « backend developer » s'efface lettre par lettre, puis « fullstack developer » s'écrit, et ainsi de suite. */
+  private cycle(l: 'fr' | 'en', delay: number) {
+    clearTimeout(this.rt);
+    const words: string[] = [UI[l].ro, UI[l].ro2];
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { this.role.set(words[0]); return; }
+    let w = 0, n = 0, erasing = false;
+    this.role.set('');
+    const tick = () => {
+      const word = words[w];
+      if (!erasing) {
+        this.role.set(word.slice(0, ++n));
+        if (n === word.length) { erasing = true; this.rt = setTimeout(tick, 1800); return; } // pause : mot complet
+        this.rt = setTimeout(tick, 85);
+      } else {
+        this.role.set(word.slice(0, --n));
+        if (n === 0) { erasing = false; w = (w + 1) % words.length; this.rt = setTimeout(tick, 350); return; }
+        this.rt = setTimeout(tick, 45);
+      }
+    };
+    this.rt = setTimeout(tick, delay);
+  }
 
   private type(l: 'fr' | 'en') {
     clearTimeout(this.tm);
