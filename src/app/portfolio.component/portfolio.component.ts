@@ -50,7 +50,7 @@ const D:any={
  sk:[
   {n:{fr:"Frontend",en:"Frontend"},i:[["HTML",3],["CSS",3],["JavaScript",2],["Angular",2]]},
   {n:{fr:"Backend",en:"Backend"},i:[["Java",3],["Spring Boot",3],["Kotlin",2],["Spring Security",2],["Architecture microservices",3],["API REST",3]]},
-  {n:{fr:"Outils",en:"Tools"},i:[["Ubuntu",3],["Maven",3],["Git, GitHub, GitLab",2]]},
+  {n:{fr:"Outils",en:"Tools"},i:[["Ubuntu",3],["Maven",3],["Git, GitHub, GitLab",2],["Postman",3],["Swagger",3],["IntellijC",3]]},
   {n:{fr:"Base de données",en:"Database"},i:[["PostgreSQL",3],["MySQL",3]]},
   {n:{fr:"Qualités personnelles",en:"Personal strengths"},i:[[{fr:"Soif de connaissance",en:"Hunger to learn"},4],[{fr:"Ponctualité",en:"Punctuality"},5],[{fr:"Gestion des émotions",en:"Emotional control"},4]]}
  ],
