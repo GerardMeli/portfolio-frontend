@@ -12,10 +12,28 @@ const D:any={
  xp:[
   {co:"Connect Technology",b:{fr:"Actuel",en:"Current"},loc:"Melen, Yaoundé",s:"2025-12",e:null,
    t:{fr:"Développeur Backend",en:"Backend Developer"},
-   k:{fr:["Maintenance et optimisation du code avec Sonarqube et Jenkins, et nouvelles fonctionnalités du Game Management Studio (GMS), un module qui centralise les jeux.","Développement fullstack de FlowChat, une messagerie en ligne intégrable à d'autres applications web pour recueillir les réclamations des clients.","Développement du module de jeu de machine à sous « CoinSlot » sous forme de microservice."],
-      en:["Code maintenance and optimisation with Sonarqube and Jenkins, plus new features for the Game Management Studio (GMS), a module that centralises games.","Full-stack development of FlowChat, a web messaging app that plugs into other web applications to collect customer complaints.","Development of the CoinSlot slot machine game module as a microservice."]},
-   d:{fr:"Spécifications générales et détaillées (UML, design patterns) · développements et composants logiciels · tests unitaires et d'intégration · phases build et run (tierce maintenance types 1 et 2) · évolutions d'applications existantes · usine logicielle Ixi (intégration continue, SVN, Sonarqube, Jenkins, TestRails, Redmine, Nexus) · estimation des charges.",
-      en:"General and detailed specifications (UML, design patterns) · software and component development · unit and integration tests · build and run phases (third-party maintenance types 1 and 2) · enhancements to existing applications · Ixi software factory (CI, SVN, Sonarqube, Jenkins, TestRails, Redmine, Nexus) · workload estimates."}},
+   k:{fr:[
+        "Maintenance et optimisation de **Game Management Studio (GMS)**, une plateforme centralisée de gestion de jeux, avec SonarQube et Jenkins, tout en développant de nouvelles fonctionnalités et en améliorant la qualité logicielle.",
+        "Développement et intégration de **FlowChat**, une application de messagerie full-stack intégrée à des applications web tierces pour centraliser et gérer les réclamations des clients.",
+        "Développement de **CoinSlot**, un module de machine à sous basé sur des microservices intégré à l'écosystème Game Management Studio, avec Kotlin et les technologies backend.",
+        "Contribution au développement et à la maintenance de **3 modules/applications logicielles (GMS, FlowChat et CoinSlot)** sur des tâches backend, frontend et d'intégration de services.",
+        "Traduction des exigences techniques et fonctionnelles en composants logiciels à l'aide de diagrammes UML, de patrons de conception (design patterns) et de spécifications techniques.",
+        "Conception et exécution de **tests unitaires et d'intégration** pour valider les composants logiciels, garantir la fiabilité et prévenir les régressions.",
+        "Maintenance applicative, débogage, résolution d'incidents et évolutions sur les systèmes logiciels existants.",
+        "Participation aux flux CI/CD et de livraison logicielle via Jenkins and SonarQube.",
+        "Contribution aux activités de build, de déploiement, de maintenance opérationnelle et d'estimation des charges logicielles."
+      ],
+      en:[
+        "Maintain and optimize **Game Management Studio (GMS)**, a centralized game management platform, using SonarQube and Jenkins, while developing new features and improving software quality.",
+        "Develop and integrate **FlowChat**, a full-stack messaging application embedded into external web applications to centralize and manage customer complaints.",
+        "Develop **CoinSlot**, a microservice-based slot machine module integrated into the Game Management Studio ecosystem, using Kotlin and backend technologies.",
+        "Contribute to the development and maintenance of **3 software modules/applications (GMS, FlowChat and CoinSlot)** across backend, frontend and service integration tasks.",
+        "Translate technical and functional requirements into software components using UML diagrams, design patterns and technical specifications.",
+        "Implement and execute **unit and integration tests** to validate software components, ensure reliability and support regression prevention.",
+        "Perform application maintenance, debugging, incident troubleshooting and enhancements across existing software systems.",
+        "Participate in CI/CD and software delivery workflows using Jenkins and SonarQube.",
+        "Contribute to software build, deployment, operational maintenance and workload estimation activities."
+      ]}},
   {co:"Sklf-Group",b:{fr:"Stage",en:"Internship"},loc:"Mendong, Yaoundé",s:"2023-06",e:"2023-08",
    t:{fr:"Stage en développement d'applications",en:"Internship in application development"},
    k:{fr:["Jeu éducatif sous Scratch pour faire découvrir la culture camerounaise.","Révision de la POO, de l'algorithmique et des API.","Notions de base sur les réseaux."],
@@ -49,6 +67,7 @@ export class Reveal implements OnInit, OnDestroy {
   private io?: IntersectionObserver;
   constructor(private el: ElementRef<HTMLElement>) {}
   ngOnInit() {
+    if (typeof IntersectionObserver === 'undefined') { this.el.nativeElement.classList.add('in'); return; }
     this.io = new IntersectionObserver(([x]) => {
       if (x.isIntersecting) { this.el.nativeElement.classList.add('in'); this.io?.disconnect(); }
     }, {threshold: .15});
@@ -98,6 +117,7 @@ export class PortfolioComponent implements OnDestroy {
   show(p: any): boolean { const f = this.filter(); return f === 'all' || (f === 'pro' && !p.p) || (f === 'per' && p.p); }
   skl(c: any): string { return c.i.map((s: any) => this.tx(s[0])).join(', '); }
   bul(s: string): string[] { return s.split(' · ').map(b => b.charAt(0).toUpperCase() + b.slice(1)); }
+  fmt(s: string): string { return s ? s.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') : ''; }
   toggleLang() { this.L.set(this.L() === 'fr' ? 'en' : 'fr'); }
   cycleTheme() { const o = ['folio', 'light', 'dark'] as const; this.theme.set(o[(o.indexOf(this.theme()) + 1) % o.length]); }
   themeLabel(): string { return UI[this.L()].th[this.theme()]; }
@@ -128,7 +148,7 @@ export class PortfolioComponent implements OnDestroy {
   private cycle(l: 'fr' | 'en', delay: number) {
     clearTimeout(this.rt);
     const words: string[] = [UI[l].ro, UI[l].ro2];
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { this.role.set(words[0]); return; }
+    if (typeof matchMedia !== 'undefined' && matchMedia?.('(prefers-reduced-motion: reduce)')?.matches) { this.role.set(words[0]); return; }
     let w = 0, n = 0, erasing = false;
     this.role.set('');
     const tick = () => {

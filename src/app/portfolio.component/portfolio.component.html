@@ -37,7 +37,7 @@
   @for (x of d.xp; track x.co) {
     <article class="xj" rv>
       <div><h3>{{ tx(x.t) }}</h3><p class="mu">{{ x.co }} | {{ x.loc }}</p><p class="mu">{{ rng(x.s, x.e) }}</p><span class="bd">{{ tx(x.b) }}</span></div>
-      <div class="r"><ul>@for (k of x.k[L()]; track $index) {<li>{{ k }}</li>}</ul>
+      <div class="r"><ul>@for (k of x.k[L()]; track $index) {<li [innerHTML]="fmt(k)"></li>}</ul>
         @if (x.d) { <details><summary>{{ u('tasks') }}</summary><p>{{ tx(x.d) }}</p></details> }</div>
     </article>
   }
@@ -113,7 +113,7 @@
     <div class="j">
       <div class="r"><b>{{ tx(x.t) }}</b><span>{{ rng(x.s, x.e) }}</span></div>
       <div class="r"><i>{{ x.co }}, {{ x.loc }}</i></div>
-      <ul>@for (k of x.k[L()]; track $index) {<li>{{ k }}</li>}@if (x.d) { @for (b of bul(tx(x.d)); track $index) {<li>{{ b }}</li>} }</ul>
+      <ul>@for (k of x.k[L()]; track $index) {<li [innerHTML]="fmt(k)"></li>}@if (x.d) { @for (b of bul(tx(x.d)); track $index) {<li [innerHTML]="fmt(b)"></li>} }</ul>
     </div>
   }
   <div>
